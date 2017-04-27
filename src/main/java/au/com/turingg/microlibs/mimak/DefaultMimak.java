@@ -1,7 +1,5 @@
 package au.com.turingg.microlibs.mimak;
 
-import org.apache.tika.Tika;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,21 +9,23 @@ import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 
 /**
+ * Default implementation for {@link Mimak}.
+ *
  * @author Behrang Saeedzadeh
  */
 public class DefaultMimak implements Mimak {
 
-    private final MimeTypeEngineAdapter mimeTypeEngine;
+    private final MimeDetectorAdapter mimeTypeEngine;
 
-    private final boolean allowSymlinks;
+    private final boolean ignoreSymlinks;
 
-    public DefaultMimak(final MimeTypeEngineAdapter mimeTypeEngine, final boolean allowSymlinks) {
+    public DefaultMimak(final MimeDetectorAdapter mimeTypeEngine, final boolean ignoreSymlinks) {
         if (mimeTypeEngine == null) {
             throw new IllegalArgumentException("mimeTypeEngine should not be null");
         }
 
         this.mimeTypeEngine = mimeTypeEngine;
-        this.allowSymlinks = allowSymlinks;
+        this.ignoreSymlinks = ignoreSymlinks;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class DefaultMimak implements Mimak {
         }
 
         final BasicFileAttributes attrs = readAttributes(file);
-        if (attrs.isDirectory() || attrs.isOther() || (!allowSymlinks && attrs.isSymbolicLink())) {
+        if (attrs.isDirectory() || attrs.isOther() || (ignoreSymlinks && attrs.isSymbolicLink())) {
             throw new MimakException(String.format("illegal file type: %s", fileTypeSummary(attrs)));
         }
 

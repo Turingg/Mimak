@@ -12,11 +12,11 @@ import java.nio.file.Path;
  * @see <a href="https://en.wikipedia.org/wiki/Adapter_pattern">Adapter pattern</a>
  * @see <a href="https://tika.apache.org/">Apache Tika</a>
  */
-public class TikaMimeTypeEngineAdapter implements MimeTypeEngineAdapter {
+public class TikaMimeDetectorAdapter implements MimeDetectorAdapter {
 
     private final Tika tika;
 
-    public TikaMimeTypeEngineAdapter(final Tika tika) {
+    public TikaMimeDetectorAdapter(final Tika tika) {
         if (tika == null) {
             throw new IllegalArgumentException("tika should not be null");
         }
@@ -24,10 +24,13 @@ public class TikaMimeTypeEngineAdapter implements MimeTypeEngineAdapter {
         this.tika = tika;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public String detect(Path path) throws MimakException {
+    public String detect(Path file) throws MimakException {
         try {
-            return tika.detect(path);
+            return tika.detect(file);
         } catch (IOException ex) {
             throw new MimakException(ex);
         }
