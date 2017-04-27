@@ -7,7 +7,10 @@ import org.apache.tika.Tika;
  *
  * @author Behrang Saeedzadeh
  */
-public class Mimaks {
+public final class Mimaks {
+
+    private Mimaks() {
+    }
 
     /**
      * Creates a new Mimak that uses {@link Tika} for MIME-type detection.
@@ -15,7 +18,7 @@ public class Mimaks {
      * @param ignoreSymlinks Do not detect MIME-type of symlinks.
      * @return A new Tika-based Mimak
      */
-    public Mimak getTikaMimak(final boolean ignoreSymlinks) {
+    public static Mimak getTikaMimak(final boolean ignoreSymlinks) {
         return new DefaultMimak(new TikaMimeDetectorAdapter(new Tika()), ignoreSymlinks);
     }
 
