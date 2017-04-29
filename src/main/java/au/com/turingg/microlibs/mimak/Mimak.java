@@ -10,6 +10,8 @@ import java.nio.file.Path;
  */
 public interface Mimak {
 
+    enum SymlinkOptions {IGNORE_SYMLINKS, SCAN_SYMLINKS}
+
     /**
      * Returns the MIME type for the given file.
      *

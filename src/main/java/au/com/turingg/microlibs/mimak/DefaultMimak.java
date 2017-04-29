@@ -8,6 +8,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 
+import static au.com.turingg.microlibs.mimak.Mimak.SymlinkOptions.IGNORE_SYMLINKS;
+
 /**
  * Default implementation for {@link Mimak}.
  *
@@ -17,15 +19,15 @@ public class DefaultMimak implements Mimak {
 
     private final MimeDetectorAdapter mimeTypeEngine;
 
-    private final boolean ignoreSymlinks;
+    private final SymlinkOptions symlinkOptions;
 
-    public DefaultMimak(final MimeDetectorAdapter mimeTypeEngine, final boolean ignoreSymlinks) {
+    public DefaultMimak(final MimeDetectorAdapter mimeTypeEngine, final SymlinkOptions symlinkOptions) {
         if (mimeTypeEngine == null) {
             throw new IllegalArgumentException("mimeTypeEngine should not be null");
         }
 
         this.mimeTypeEngine = mimeTypeEngine;
-        this.ignoreSymlinks = ignoreSymlinks;
+        this.symlinkOptions = symlinkOptions;
     }
 
     @Override
@@ -35,7 +37,7 @@ public class DefaultMimak implements Mimak {
         }
 
         final BasicFileAttributes attrs = readAttributes(file);
-        if (attrs.isDirectory() || attrs.isOther() || (ignoreSymlinks && attrs.isSymbolicLink())) {
+        if (attrs.isDirectory() || attrs.isOther() || (symlinkOptions == IGNORE_SYMLINKS && attrs.isSymbolicLink())) {
             throw new MimakException(String.format("illegal file type: %s", fileTypeSummary(attrs)));
         }
 
