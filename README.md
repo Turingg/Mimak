@@ -1,6 +1,6 @@
-# Mimak
+# Turingg Mimak
 
-Mimak is a micro-library that makes detection of MIME type for files DRYer.
+Turingg Mimak is a micro-library that makes detection of MIME type for files DRYer.
 
 I made Mimak while working on a disk scanning tool. I have re-written the code for that tool multiple
 times so far and each time I rewrote the MIME type detection logic from scratch. This put me into a
